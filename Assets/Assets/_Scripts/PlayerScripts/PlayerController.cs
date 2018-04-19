@@ -8,6 +8,14 @@ public class PlayerController : MonoBehaviour {
     public Animator Anim;
     public float MovementSpeed = 100;
 
+
+    public float SmoothDamp = 10;
+
+    public GameObject bullet; 
+
+
+    public Camera cam; 
+
     public Vector3 IP; // Movement Input
 
     float DT;
@@ -33,6 +41,16 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void doCombat()
+    {
+        //Movement();
+
+        //if(Attacking)
+        //{
+        //    Instantiate(bullet)
+        //}
+    }
+
     public void updateAnim(Animator AnimationController)
     {
         if (AnimationController != null)
@@ -42,14 +60,35 @@ public class PlayerController : MonoBehaviour {
             AnimationController.SetFloat("RightSpeed", localVel.x);
         }
     }
+    public void doLook() //rotate our player towards the mouse cursor 
+    {
+        RaycastHit hit;
 
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition); //creating ray from mouse point on screen
+
+        if(Physics.Raycast(ray, out hit, 100000)) //casting out a ray and populating our hit value
+        {
+            Vector3 forward = (transform.position - hit.point) * -1; //getting the direction between our position and our hitpoint position
+            forward.y = 0; //zeroing out the y to stay upright
+            forward.Normalize(); //Normalize to calculate direction
+
+            transform.forward = Vector3.MoveTowards(transform.forward, forward, Time.deltaTime * 2); //Move our forward towards the direction between the positions 
+        }
+    }
 	// Update is called once per frame
 	void Update () {
 
         DT = Time.deltaTime;
 
         KeyInput();
-        doMovement(DT, IP);
         updateAnim(Anim);
 	}
+
+    private void FixedUpdate()
+    {
+        doLook();
+
+
+        doMovement(DT, IP);
+    }
 }
