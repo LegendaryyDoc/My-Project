@@ -30,6 +30,8 @@ public class AIController : MonoBehaviour {
 
     public float SetAttackDelay;
 
+    public GameObject Player; // !
+
 	// Use this for initialization
 	void Start () {
 
