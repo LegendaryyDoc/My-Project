@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour {
 
     public void CameraMoveTowards()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Player.transform.position + offset, movespeed * Time.deltaTime); 
+        transform.position = Vector3.Lerp(transform.position, Player.transform.position + offset, movespeed * Time.deltaTime); 
     }
 	// Use this for initialization
 	void Start () {
